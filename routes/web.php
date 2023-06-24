@@ -18,6 +18,7 @@ use App\Http\Controllers\Common\CKEditorController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\Auth\AuthController;
 use App\Http\Controllers\Backend\Dashboard\Patient\PatientController;
+use App\Http\Controllers\Backend\Dashboard\Service\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,12 @@ Route::group(['prefix'=>'admin','middleware'=>'dashboard.auth'],function(){
     Route::post('patient/followup',[PatientController::class,'delete'])->name('admin.patient.followup');
     Route::post('patient/discharge',[PatientController::class,'status'])->name('admin.patient.discharge');
 
+    /* ----------------------------Service Route -------------------------------------------- */
+    Route::get('service/create',[ServiceController::class,'create'])->name('admin.service.create');
+    Route::get('service/view',[ServiceController::class,'view'])->name('admin.service.view');
+    Route::post('service/delete',[ServiceController::class,'delete'])->name('admin.service.delete');
+    Route::get('service/{id}/edit',[ServiceController::class,'edit'])->name('admin.service.edit');
+
 });
 
 
@@ -157,6 +164,12 @@ Route::group(['prefix'=>'admin','middleware'=>'ajax-request.auth'],function(){
    Route::get('patient/display',[PatientController::class,'display'])->name('admin.patient.display');
    Route::post('patient/update',[PatientController::class,'update'])->name('admin.patient.update');
    /* ----------------------------Patient Route End-------------------------------------------- */
+
+    /* ----------------------------Service Route End-------------------------------------------- */
+    Route::post('service/store',[ServiceController::class,'store'])->name('admin.service.store');
+    Route::get('service/display',[ServiceController::class,'display'])->name('admin.service.display');
+    Route::post('service/update',[ServiceController::class,'update'])->name('admin.service.update');
+    /* ----------------------------Service Route End-------------------------------------------- */
 
 });
 

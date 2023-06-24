@@ -74,7 +74,36 @@
                 </ul>
             </ul>
         </li>
+        {{-- Service-moduel Side Bar --}}
         @endif
+        @if(getLogInUserPermission('admin.service.create') ||
+        getLogInUserPermission('admin.service.view'))
+       <li>
+           <a class="has-arrow" href="javascript:;">
+               <div class="parent-icon"><i class="bx bx-message-square-edit"></i>
+               </div>
+               <div class="menu-title">Services Manage</div>
+           </a>
+           <ul class="mm-collapse">
+               <ul class="menu-sub">
+                   @if(getLogInUserPermission('admin.service.create'))
+                   <li class="menu-item add-user">
+                       <a href="{{ route('admin.service.create') }}" class="menu-link">
+                           <i class="bx bx-radio-circle"></i>Add Service
+                       </a>
+                   </li>
+                   @endif
+                   @if(getLogInUserPermission('admin.patient.view'))
+                   <li class="menu-item view-user">
+                       <a href="{{ route('admin.service.view') }}" class="menu-link">
+                           <i class="bx bx-radio-circle"></i>View Service
+                       </a>
+                   </li>
+                   @endif
+               </ul>
+           </ul>
+       </li>
+       @endif
         <li class="menu-label">Medicines</li>
         <li>
             <a href="#">
