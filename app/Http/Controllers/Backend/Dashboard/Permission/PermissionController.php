@@ -114,12 +114,12 @@ class PermissionController extends Controller
                 $edit ='';
                 if(getLogInUserPermission('admin.permission.delete')){
 
-                    $delete = '<a href="javascript:void(0)" data-id="'.$row->permission_id.'" data-token="'.csrf_token().'" data-url="'.route('admin.permission.delete').'" class="btn btn-danger btn-sm Delete_Button"><i class="fa fa-trash"></i></a>
+                    $delete = '<a href="javascript:void(0)" data-id="'.$row->permission_id.'" data-token="'.csrf_token().'" data-url="'.route('admin.permission.delete').'" class="Delete_Button"><i class="fa fa-trash btn btn-danger"></i></a>
                 ';
                 }
                 if(getLogInUserPermission('admin.permission.edit')){
 
-                    $edit = '<a href="'.route('admin.permission.edit', ['id' => $row->permission_id]).'" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>';
+                    $edit = '<a href="'.route('admin.permission.edit', ['id' => $row->permission_id]).'" class=""><i class="fa fa-edit btn btn-warning"></i></a>';
                 }
                 return $delete.'&nbsp;&nbsp;'.$edit;
             })

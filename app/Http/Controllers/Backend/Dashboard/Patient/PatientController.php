@@ -1,73 +1,78 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Dashboard\Role;
+namespace App\Http\Controllers\Backend\Dashboard\Patient;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Backend\RoleRequest;
+use App\Http\Requests\Backend\PatientRequest;
 use App\Models\Permission;
 use App\Models\SetPermission;
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
 use DataTables;
-class RoleController extends Controller
+use App\Models\LogModel;
+class PatientController extends Controller
 {
     public function create()
     {
-        $activePermission = Permission::where('status',1)->get();
-        return view('backend.dashboard.role.create',compact('activePermission'));
+        return view('backend.dashboard.patient.create');
     }
-    public function store(RoleRequest $request)
+    public function store(PatientRequest $request)
     {
-        $data = new Role;
-        $data->name = $request->name;
-        $data->slug = $request->slug;
-        $data->all = $request->permission_type;
+        $data = new Patient;
+        $data->form_type = $request->form_type;
+        $data->reg_no = $request->reg_no;
+        $data->bed_no = $request->bed_no;
+        $data->patient_name = $request->patient_name;
+        $data->age = $request->age;
+        $data->gender = $request->gender;
+        $data->admission_date = $request->admission_date;
+        $data->admission_time = $request->admission_time;
+        $data->aadhaar_no = $request->aadhaar_no;
+        $data->guardian_name = $request->guardian_name;
+        $data->address = $request->address;
+        $data->under_doctor = $request->under_doctor;
+        $data->refer_doctor_1 = $request->refer_doctor_1;
+        $data->refer_doctor_2 = $request->refer_doctor_2;
+        $data->phone_no = $request->phone_no;
+        $data->alternative_phone_no = $request->alternative_phone_no;
+        $data->refer_by = $request->refer_by;
+        $data->mode = $request->mode;
+        $data->urn_no = $request->urn_no;
+        $data->insurance_name = $request->insurance_name;
+        $data->anesthesis = $request->anesthesis;
+        $data->child_doctor = $request->child_doctor;
+        $data->assistance_1 = $request->assistance_1;
+        $data->assistance_2 = $request->assistance_2;
         $data->status = $request->status;
-        if($request->permission_type=='1')
-        {
-            $response = $data->save();
-            if($response){
-                // getResponse(status,redirect,reload,url,message)
-                $response =  getResponse(true,false,false,null,"Role Added Successfully");
+        $data->discharge_status = $request->discharge_status;
+        $store = $data->save();
+        if($store){
+            $admin = getActiveAdminDetails();
+            if($admin->role == null){
+                $role =  'Administartor';
             }
             else{
-                // getResponse(status,redirect,reload,url,message)
-                $response =  getResponse(false,false,false,null,"Technical issue, please try again..");
+                $role =  $admin->role->name;
             }
+            $description = 'New Patient Create';
+            $log_title = 'New Patient Created by &nbsp;<b>'.$admin->name.'('.$role.')</b>';
+            $log_data = [
+                'patient_id'=>$data->id,
+                'user_id'=>$admin->id,
+                'log_title'=>$log_title,
+                'log_type'=>'Patient Add',
+                'description'=>$description,
+                'ip_address'=> $request->ip()
+            ];
+            save_log($log_data);
+            // getResponse(status,redirect,reload,url,message)
+            $response =  getResponse(true,false,false,null,"Patient Added Successfully");
         }
-        else
-        {
-            $response = $data->save();
-            if($response){
-                $permission = $request->permission_id;
-                $countPermission = count($permission);
-                $set_permision = [];
-                for($i=0;$i<$countPermission;$i++){
-
-                    $set_permision[] = [
-                        'role_id'=>$data->role_id,
-                        'permission_id'=>$permission[$i]
-                    ];
-                }
-
-                $response = SetPermission::insert($set_permision);
-                if($response){
-                    // getResponse(status,redirect,reload,url,message)
-                    $response =  getResponse(true,false,false,null,"Role Added Successfully");
-                }
-                else{
-                    // getResponse(status,redirect,reload,url,message)
-                    $response =  getResponse(false,false,false,null,"Technical issue, please try again..");
-                }
-
-            }
-            else{
-                // getResponse(status,redirect,reload,url,message)
-                $response =  getResponse(false,false,false,null,"Technical issue, please try again..");
-            }
+        else{
+            // getResponse(status,redirect,reload,url,message)
+            $response =  getResponse(false,false,false,null,"Technical issue, please try again..");
         }
-
 
         return $response;
 
@@ -75,27 +80,27 @@ class RoleController extends Controller
 
     public function view()
     {
-        return view('backend.dashboard.role.view');
+        return view('backend.dashboard.patient.view');
     }
 
     public function display(Request $request)
     {
         if ($request->ajax()) {
 
-            $sql = Role::select('*');
+            $sql = Patient::select('*');
             $row = $request->row;
             $type = $request->type;
             $from_date = $request->from_date;
             $to_date = $request->to_date;
 
-            $status = $request->status;
+            $discharge_status = $request->status;
             if($type !="")
             {
               $sql->where('shop_type_id',$type);
             }
-            if($status !="")
+            if($discharge_status !="")
             {
-               $sql->where('status',$status);
+               $sql->where('discharge_status',$discharge_status);
             }
             if($from_date !='' && $to_date =='')
             {
@@ -118,49 +123,24 @@ class RoleController extends Controller
             //   $sql->limit($row);
             // }
             return Datatables::of($sql)
-            ->editColumn('slug', function ($row) {
-                return '<span class="badge bg-success">'.$row->slug.'</span>';
-            })
-            ->addColumn('status', function ($row) {
-                $active="";
-                $deactive="";
-                $blank="";
-                if($row->status==1){
-                    $active ="selected";
-                }
-                if($row->status==0){
-                    $deactive ="selected";
-                }
-                if($row->status==null || $row->status ==""){
-                    $blank ="selected";
-                }
-                $status = '';
-                if(getLogInUserPermission('admin.role.status')){
-                    $status = '<select class="form-control Status_Update" name="status" data-id="'.$row->role_id.'"  data-token="'.csrf_token().'" data-url="'.route('admin.role.status').'">
-                        <option value="" '.$blank.'>Select</option>
-                        <option value="1" '.$active.'>Active</option>
-                        <option value="0" '.$deactive.'>Deactive</option>
-                    </select>
-                    ';
-                }
-
-                return $status;
+            ->editColumn('discharge_status', function ($row) {
+                return '<span class="badge bg-success">'.getPatientDischarge($row->discharge_status).'</span>';
             })
             ->addColumn('action', function ($row) {
                 $delete = '';
                 $edit = '';
-                if(getLogInUserPermission('admin.role.delete')){
-                    $delete = '<a href="javascript:void(0)" data-id="'.$row->role_id.'" data-token="'.csrf_token().'" data-url="'.route('admin.role.delete').'" class=" Delete_Button"><i class="fa fa-trash btn btn-danger"></i></a>
+                if(getLogInUserPermission('admin.patient.delete')){
+                    $delete = '<a href="javascript:void(0)" data-id="'.$row->id.'" data-token="'.csrf_token().'" data-url="'.route('admin.patient.delete').'" class=" Delete_Button"><i class="fa fa-trash btn btn-danger"></i></a>
                 ';
                 }
-                if(getLogInUserPermission('admin.role.edit')){
-                    $edit = '<a href="'.route('admin.role.edit', ['id' => $row->role_id]).'" class=""><i class="fa fa-edit btn btn-warning"></i></a>';
+                if(getLogInUserPermission('admin.patient.edit')){
+                    $edit = '<a href="'.route('admin.patient.edit', ['id' => $row->id]).'" class=""><i class="fa fa-edit btn btn-warning"></i></a>';
                 }
-                return $delete.'&nbsp;&nbsp;'.$edit;
+                return $edit.'&nbsp;&nbsp;'.$delete;
             })
             ->escapeColumns([])
             ->make(true);
-            }
+        }
     }
 
     public function delete(Request $request)
@@ -203,16 +183,13 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        $data = Role::find($id);
-        $activePermission = Permission::where('status',1)->get();
-        $userPermission = SetPermission::where('role_id',$id)->pluck('permission_id')->ToArray();
-
-        if(!empty($data))
+        $patient_details = Patient::with(['log'])->where('id',$id)->first();
+        if(!empty($patient_details))
         {
-            return view('backend.dashboard.role.edit',compact('data','activePermission','userPermission'));
+            return view('backend.dashboard.patient.edit',compact('patient_details'));
         }
 
-        return view('backend.dashboard.role.view');
+        return view('backend.dashboard.patient.view');
 
     }
 

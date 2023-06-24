@@ -128,15 +128,15 @@ class UserManageController extends Controller
                 $user_permission = '';
                 if(getLogInUserPermission('admin.user.delete')){
 
-                    $delete = '<a href="javascript:void(0)" data-id="'.$row->id.'" data-token="'.csrf_token().'" data-url="'.route('admin.user.delete').'" class="btn btn-danger btn-sm Delete_Button" title="User Delete"><i class="fa fa-trash"></i></a>
+                    $delete = '<a href="javascript:void(0)" data-id="'.$row->id.'" data-token="'.csrf_token().'" data-url="'.route('admin.user.delete').'" class="Delete_Button" title="User Delete"><i class="fa fa-trash btn btn-danger"></i></a>
                 ';
                 }
                 if(getLogInUserPermission('admin.user.edit')){
 
-                    $edit = '<a href="'.route('admin.user.edit', ['id' => $row->id]).'" class="btn btn-warning btn-sm" title="User Update"><i class="fa fa-edit"></i></a>';
+                    $edit = '<a href="'.route('admin.user.edit', ['id' => $row->id]).'" class="" title="User Update"><i class="fa fa-edit btn btn-warning"></i></a>';
                 }
                 if(getLogInUserPermission('admin.user.permission')){
-                     $user_permission = '<a href="'.route('admin.user.permission', ['id' => $row->id]).'" class="btn btn-info btn-sm" title="User Permission"><i class="fa fa-unlock"></i></a>';
+                     $user_permission = '<a href="'.route('admin.user.permission', ['id' => $row->id]).'" class="" title="User Permission"><i class="fa fa-unlock btn btn-info"></i></a>';
                 }
                 return $delete.'&nbsp;&nbsp;'.$edit.'&nbsp;&nbsp'.$user_permission;
             })
