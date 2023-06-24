@@ -183,7 +183,9 @@ class PatientController extends Controller
 
     public function edit($id)
     {
-        $patient_details = Patient::with(['log'])->where('id',$id)->first();
+        $patient_details = Patient::with(['log'=>function($query){
+            $query->orderBy('id','desc');
+        }])->where('id',$id)->first();
         if(!empty($patient_details))
         {
             return view('backend.dashboard.patient.edit',compact('patient_details'));
@@ -193,75 +195,168 @@ class PatientController extends Controller
 
     }
 
-    public function update(RoleRequest $request)
+    public function update(PatientRequest $request)
     {
-        $role = Role::find($request->id);
-        if(!empty($role))
+        $data = Patient::find($request->patient_id);
+        if(!empty($data))
         {
-            $role->name = $request->name;
-            $role->slug = $request->slug;
-            $role->status = $request->status;
-            $role->all = $request->permission_type;
-            if($request->permission_type=='1'){
-                $response = $role->save();
-                if($response){
-                    $response =  getResponse(true,false,false,null,"Role Update Successfully");
+            $description = '<b>Patient Updated</b> <br>';
+            if($data->form_type != $request->form_type)
+            {
+                $description .= 'Form Type change from '.$data->form_type.' to '.$request->form_type.'</br>';
+            }
+            $data->form_type = $request->form_type;
+            if($data->bed_no != $request->bed_no)
+            {
+                $description .= 'Bed Type change from '.$data->bed_no.' to '.$request->bed_no.'</br>';
+            }
+            $data->bed_no = $request->bed_no;
+            if($data->patient_name != $request->patient_name)
+            {
+                $description .= 'Patient Name change from '.$data->patient_name.' to '.$request->patient_name.'</br>';
+            }
+            $data->patient_name = $request->patient_name;
+            if($data->age != $request->age)
+            {
+                $description .= 'Age change from '.$data->age.' to '.$request->age.'</br>';
+            }
+            $data->age = $request->age;
+            if($data->gender != $request->gender)
+            {
+                $description .= 'Gender change from '.$data->gender.' to '.$request->gender.'</br>';
+            }
+            $data->gender = $request->gender;
+            $data->age = $request->age;
+            if($data->admission_date != $request->admission_date)
+            {
+                $description .= 'Admission date change from '.$data->admission_date.' to '.$request->admission_date.'</br>';
+            }
+            $data->admission_date = $request->admission_date;
+            if($data->admission_time != $request->admission_time)
+            {
+                $description .= 'Admission time change from '.$data->admission_time.' to '.$request->admission_time.'</br>';
+            }
+            $data->admission_time = $request->admission_time;
+            if($data->aadhaar_no != $request->aadhaar_no)
+            {
+                $description .= 'Aadhaar no change from '.$data->aadhaar_no.' to '.$request->aadhaar_no.'</br>';
+            }
+            $data->aadhaar_no = $request->aadhaar_no;
+            if($data->guardian_name != $request->guardian_name)
+            {
+                $description .= 'Guardian name change from '.$data->guardian_name.' to '.$request->guardian_name.'</br>';
+            }
+            $data->guardian_name = $request->guardian_name;
+            if($data->address != $request->address)
+            {
+                $description .= 'Address change from '.$data->address.' to '.$request->address.'</br>';
+            }
+            $data->address = $request->address;
+            if($data->under_doctor != $request->under_doctor)
+            {
+                $description .= 'Under Doctor change from '.$data->under_doctor.' to '.$request->under_doctor.'</br>';
+            }
+            $data->under_doctor = $request->under_doctor;
+            if($data->refer_doctor_1 != $request->refer_doctor_1)
+            {
+                $description .= 'Refer Doctor 1 change from '.$data->refer_doctor_1.' to '.$request->refer_doctor_1.'</br>';
+            }
+            $data->refer_doctor_1 = $request->refer_doctor_1;
+            if($data->refer_doctor_2 != $request->refer_doctor_2)
+            {
+                $description .= 'Refer Doctor 2 change from '.$data->refer_doctor_2.' to '.$request->refer_doctor_2.'</br>';
+            }
+            $data->refer_doctor_2 = $request->refer_doctor_2;
+            if($data->phone_no != $request->phone_no)
+            {
+                $description .= 'Phone no change from '.$data->phone_no.' to '.$request->phone_no.'</br>';
+            }
+            $data->phone_no = $request->phone_no;
+            if($data->alternative_phone_no != $request->alternative_phone_no)
+            {
+                $description .= 'Alternative Phone no change from '.$data->alternative_phone_no.' to '.$request->alternative_phone_no.'</br>';
+            }
+            $data->alternative_phone_no = $request->alternative_phone_no;
+            if($data->refer_by != $request->refer_by)
+            {
+                $description .= 'Refer By change from '.$data->refer_by.' to '.$request->refer_by.'</br>';
+            }
+            $data->refer_by = $request->refer_by;
+            if($data->mode != $request->mode)
+            {
+                $description .= 'Payment mode change from '.$data->mode.' to '.$request->mode.'</br>';
+            }
+            $data->mode = $request->mode;
+            if($data->urn_no != $request->urn_no)
+            {
+                $description .= 'URN no change from '.$data->urn_no.' to '.$request->urn_no.'</br>';
+            }
+            $data->urn_no = $request->urn_no;
+            if($data->insurance_name != $request->insurance_name)
+            {
+                $description .= 'Insurance no change from '.$data->insurance_name.' to '.$request->insurance_name.'</br>';
+            }
+            $data->insurance_name = $request->insurance_name;
+            if($data->anesthesis != $request->anesthesis)
+            {
+                $description .= 'Anesthesis change from '.$data->anesthesis.' to '.$request->anesthesis.'</br>';
+            }
+            $data->anesthesis = $request->anesthesis;
+            if($data->child_doctor != $request->child_doctor)
+            {
+                $description .= 'Anesthesis change from '.$data->child_doctor.' to '.$request->child_doctor.'</br>';
+            }
+            $data->child_doctor = $request->child_doctor;
+            if($data->assistance_1 != $request->assistance_1)
+            {
+                $description .= 'Assistance 1 change from '.$data->assistance_1.' to '.$request->assistance_1.'</br>';
+            }
+            $data->assistance_1 = $request->assistance_1;
+            if($data->assistance_2 != $request->assistance_2)
+            {
+                $description .= 'Assistance 2 change from '.$data->assistance_2.' to '.$request->assistance_2.'</br>';
+            }
+            $data->assistance_2 = $request->assistance_2;
+            if($data->status != $request->status)
+            {
+                $description .= 'Patient Status change from '.getStatus($data->status).' to '.getStatus($request->status).'</br>';
+            }
+            $data->status = $request->status;
+            if($data->discharge_status != $request->discharge_status)
+            {
+                $description .= 'Discharge Status change from '.getPatientDischarge($data->discharge_status).' to '.getPatientDischarge($request->discharge_status).'</br>';
+            }
+            $data->discharge_status = $request->discharge_status;
 
+            $update = $data->save();
+            if($update){
+                $admin = getActiveAdminDetails();
+                if($admin->role == null){
+                    $role =  'Administartor';
                 }
                 else{
-                    $response =  getResponse(false,false,false,null,"Technical isuue, please try again.. !");
-
+                    $role =  $admin->role->name;
                 }
+                $log_title = 'Patient Updated by &nbsp;<b>'.$admin->name.'('.$role.')</b>';
+                $log_data = [
+                    'patient_id'=>$data->id,
+                    'user_id'=>$admin->id,
+                    'log_title'=>$log_title,
+                    'log_type'=>'Patient Add',
+                    'description'=>$description,
+                    'ip_address'=> $request->ip()
+                ];
+                save_log($log_data);
+                 // getResponse(status,redirect,reload,url,message)
+                $response =  getResponse(true,false,true,null,"Patient Update Successfully");
+
             }
             else{
+                // getResponse(status,redirect,reload,url,message)
 
-                $setpermission = new SetPermission;
-                $permission = $request->permission_id;
-                $countPermission = count($permission);
-                $UpdatePermission = $setpermission->AllPermission($request->id);
-
-                // insert permission
-                    for($i=0;$i<$countPermission;$i++){
-                        if(!in_array($permission[$i],$UpdatePermission['permission_id']))
-                        {
-                            $set_permission[] = [
-                                'role_id'=>$request->id,
-                                'permission_id'=>$permission[$i]
-                            ];
-                        }
-                    }
-                    // delete old permission
-                    $delete_permission = [];
-                    $countPermission = count($UpdatePermission['permission_id']);
-                    for($i=0;$i< $countPermission;$i++){
-                        if(!in_array($UpdatePermission['permission_id'][$i],$permission))
-                        {
-                            $delete_permission[] =$UpdatePermission['id'][$i];
-                        }
-                    }
-
-                    if(!empty($delete_permission))
-                    {
-                        $response = $setpermission->whereIn('id',$delete_permission)->delete();
-                    }
-                    if(!empty($set_permission))
-                    {
-                        $response = $setpermission->insert($set_permission);
-                    }
-
-                    $response = $role->save();
-                    if($response){
-                        $response =  getResponse(true,false,false,null,"Role Update Successfully");
-
-                    }
-                    else{
-                        $response =  getResponse(false,false,false,null,"Technical isuue, please try again.. !");
-
-                    }
+                $response =  getResponse(false,false,false,null,"Technical isuue, please try again.. !");
 
             }
-
-
 
         }
         else

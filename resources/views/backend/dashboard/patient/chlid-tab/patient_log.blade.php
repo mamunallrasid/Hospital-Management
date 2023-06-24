@@ -15,7 +15,7 @@
 
                     <div class="accordion-body">
                         <span class="float-end">IP Address : {{ $log_data->ip_address }} <br>Date: {{ $log_data->created_at }}</span>
-                        {{ $log_data->description }}
+                        @php echo $log_data->description; @endphp
                     </div>
                 </div>
             </div>

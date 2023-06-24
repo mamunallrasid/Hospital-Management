@@ -121,3 +121,18 @@ function getPatientDischarge($value) {
     }
     return $value;
 }
+
+function getStatus($value) {
+    switch ($value) {
+        case '0':
+            $value = "Dactive";
+            break;
+        case '1':
+            $value = "Active";
+            break;
+        default:
+            $value = "";
+            break;
+    }
+    return $value;
+}
