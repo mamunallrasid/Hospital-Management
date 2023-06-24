@@ -251,6 +251,11 @@ $(function() {
 		xaxis: {
 			categories: ["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"]
 		},
+		grid: {
+			show: true,
+			borderColor: 'rgba(0, 0, 0, 0.15)',
+			strokeDashArray: 4,
+		},
 		fill: {
 			opacity: 1
 		},
@@ -1021,7 +1026,7 @@ $(function() {
 				hollow: {
 					margin: 0,
 					size: "78%",
-					background: "#ceffca",
+					background: "transparent",
 					image: void 0,
 					imageOffsetX: 0,
 					imageOffsetY: 0,
@@ -1042,7 +1047,7 @@ $(function() {
 						top: -3,
 						left: 0,
 						blur: 4,
-						color: "rgba(0, 169, 255, 0.85)",
+						color: "rgba(0, 169, 255, 0.5)",
 						opacity: .65
 					}
 				},
@@ -1101,7 +1106,7 @@ $(function() {
 				hollow: {
 					margin: 0,
 					size: "78%",
-					background: "#ffd6da",
+					background: "transparent",
 					image: void 0,
 					imageOffsetX: 0,
 					imageOffsetY: 0,
@@ -1180,7 +1185,7 @@ $(function() {
 				hollow: {
 					margin: 0,
 					size: "78%",
-					background: "#ffedb9",
+					background: "transparent",
 					image: void 0,
 					imageOffsetX: 0,
 					imageOffsetY: 0,
@@ -1253,7 +1258,7 @@ $(function() {
 		}],
 		chart: {
 			foreColor: "#9ba7b2",
-			type: "bar",
+			type: "area",
 			height: 270,
 			toolbar: {
 				show: !1
@@ -1281,6 +1286,11 @@ $(function() {
 			hover: {
 				size: 7
 			}
+		},
+		grid: {
+			show: true,
+			borderColor: 'rgba(0, 0, 0, 0.15)',
+			strokeDashArray: 4,
 		},
 		plotOptions: {
 			bar: {
@@ -1452,14 +1462,16 @@ $(function() {
 		xaxis: {
 			categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"]
 		},
+		grid: {
+			show: true,
+			borderColor: 'rgba(0, 0, 0, 0.15)',
+			strokeDashArray: 4,
+		},
 		fill: {
 			opacity: 1
 		}
 	};
 	new ApexCharts(document.querySelector("#chart21"), e).render()
-	
-	
-	
 	
 	$(document).ready(function() {
 		$('#Transaction-History').DataTable({
@@ -1470,32 +1482,8 @@ $(function() {
 	  
 	  
 	  
-	  
-	  
 	    new PerfectScrollbar('.product-list');
 		new PerfectScrollbar('.customers-list');
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

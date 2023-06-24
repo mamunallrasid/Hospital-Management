@@ -194,7 +194,7 @@ function requestSend(Form,url)
                     contentType:false,
                     dataType:"json",
                     beforeSend : function(){
-                       $('#submit').attr('disabled',true);
+                    //    $('#submit').attr('disabled',true);
                        $('#submit').html('<i class="la la-spinner spinner"></i>&nbsp;Please Wait..');
                     },
                     success:function(data){

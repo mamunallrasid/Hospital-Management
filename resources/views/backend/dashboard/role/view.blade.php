@@ -20,7 +20,7 @@
 
                   </h5>
 
-                  <div class="row">
+                  <div class="row mb-3">
                       <input type="hidden" name="token" id="token" value="{{csrf_token()}}">
                       <input type="hidden" name="display_url" id="display_url" value="{{ route('admin.role.display') }}">
 
@@ -64,7 +64,7 @@
                           </select>
                       </div>
                   </div>
-                <table class="table table-bordered text-center table-sm" id="mytable" style="border: 1px solid gray;">
+                <table class="table table-striped table-bordered dataTable text-center table-sm" id="mytable" style="border: 1px solid gray;">
                    <thead>
                       <tr>
                          <th class="text-center"><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>

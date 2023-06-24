@@ -28,8 +28,8 @@ $(function() {
 			curve: "smooth"
 		},
 		xaxis: {
-			type: "datetime",
-			categories: ["1/11/2000", "2/11/2000", "3/11/2000", "4/11/2000", "5/11/2000", "6/11/2000", "7/11/2000", "8/11/2000", "9/11/2000", "10/11/2000", "11/11/2000", "12/11/2000"]
+			//type: "datetime",
+			categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 		},
 		title: {
 			text: "Sessions",
@@ -64,10 +64,10 @@ $(function() {
 			enabled: !1
 		},
 		colors: ["#0d6efd"],
-		yaxis: {
-			title: {
-				text: "Sessions"
-			}
+		grid: {
+			show: true,
+			borderColor: 'rgba(0, 0, 0, 0.15)',
+			strokeDashArray: 4,
 		}
 	};
 	new ApexCharts(document.querySelector("#chart1"), e).render();
@@ -109,7 +109,7 @@ $(function() {
 		plotOptions: {
 			bar: {
 				horizontal: !1,
-				columnWidth: "45%",
+				columnWidth: "30%",
 				endingShape: "rounded"
 			}
 		},
@@ -187,7 +187,7 @@ $(function() {
 		plotOptions: {
 			bar: {
 				horizontal: !1,
-				columnWidth: "45%",
+				columnWidth: "30%",
 				endingShape: "rounded"
 			}
 		},
@@ -265,7 +265,7 @@ $(function() {
 		plotOptions: {
 			bar: {
 				horizontal: !1,
-				columnWidth: "45%",
+				columnWidth: "30%",
 				endingShape: "rounded"
 			}
 		},
@@ -343,7 +343,7 @@ $(function() {
 		plotOptions: {
 			bar: {
 				horizontal: !1,
-				columnWidth: "45%",
+				columnWidth: "30%",
 				endingShape: "rounded"
 			}
 		},

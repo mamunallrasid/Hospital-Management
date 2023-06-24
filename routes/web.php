@@ -17,6 +17,7 @@ use App\Http\Controllers\Common\CKEditorController;
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\Auth\AuthController;
+use App\Http\Controllers\Backend\Dashboard\Patient\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +102,14 @@ Route::group(['prefix'=>'admin','middleware'=>'dashboard.auth'],function(){
     Route::post('user/status',[UserManageController::class,'status'])->name('admin.user.status');
     Route::get('user/{id}/permission',[UserManageController::class,'userPermission'])->name('admin.user.permission');
 
+    /* ----------------------------Patient Route -------------------------------------------- */
+    Route::get('patient/create',[PatientController::class,'create'])->name('admin.patient.create');
+    Route::get('patient/view',[PatientController::class,'view'])->name('admin.patient.view');
+    Route::get('patient/{id}/edit',[PatientController::class,'edit'])->name('admin.patient.edit');
+    Route::post('patient/delete',[RoleController::class,'delete'])->name('admin.patient.delete');
+    Route::post('patient/status',[PatientController::class,'status'])->name('admin.patient.status');
+    Route::post('patient/followup',[PatientController::class,'delete'])->name('admin.patient.followup');
+    Route::post('patient/discharge',[PatientController::class,'status'])->name('admin.patient.discharge');
 
 });
 
@@ -144,6 +153,10 @@ Route::group(['prefix'=>'admin','middleware'=>'ajax-request.auth'],function(){
     Route::post('user/update',[UserManageController::class,'update'])->name('admin.user.update');
 
    /* ----------------------------User Route End-------------------------------------------- */
+   Route::post('patient/store',[PatientController::class,'store'])->name('admin.patient.store');
+   Route::get('patient/display',[PatientController::class,'display'])->name('admin.patient.display');
+   Route::post('patient/update',[PatientController::class,'update'])->name('admin.patient.update');
+   /* ----------------------------Patient Route End-------------------------------------------- */
 
 });
 
